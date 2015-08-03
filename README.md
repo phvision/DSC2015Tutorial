@@ -12,12 +12,12 @@
       * [安裝課程所需套件](#安裝課程所需套件)
       * [安裝swirl課程](#安裝swirl課程)
       * [打開課程投影片](#打開課程投影片)
+    * [使用Docker環境](#使用docker環境)
     * [使用雲端學習平台](#使用雲端學習平台)
-  * [Table of Contents](#table-of-contents)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
-**最新DSC2015R套件版本: 0.2**
+**最新DSC2015R套件版本: 0.2.1**
 
 這次年會，我們提供兩種讓學員在課程之中使用R 的方式:
 
@@ -61,7 +61,21 @@ Ubuntu 14.04 的使用者可以在 bash 執行以下指令來安裝學習環境:
 請在R 的Console執行以下指令：
 
 ```r
-install.packages("DSC2015R", repos = "http://taiwanrusergroup.github.io/R")
+source("http://taiwanrusergroup.github.io/R/init.R")
+```
+
+或是
+
+```r
+options(repos = "http://taiwanrusergroup.github.io/R")
+local({
+  install.packages('DSC2015R')
+  pkgs.remote <- available.packages()
+  pkgs.local <- installed.packages()
+  pkgs <- intersect(rownames(pkgs.remote), rownames(pkgs.local))
+  pkgs.outdated <- package_version(pkgs.local[pkgs, "Version"]) < package_version(pkgs.remote[pkgs, "Version"])
+  if (sum(pkgs.outdated) > 0) install.packages(names(which(pkgs.outdated)))
+})
 ```
 
 ### 安裝swirl課程
@@ -87,6 +101,22 @@ slide()
 ```
 
 請依照指示輸入你想要打開的課程投影片即可。例如，若你想要打開R ETL (aha)的投影片，請輸入`4`。
+
+## 使用Docker環境
+
+```sh
+docker pull twrusergroup/dsc2015tutorial
+docker run -d -p 8787:8787 twrusergroup/dsc2015tutorial
+```
+
+使用瀏覽器開啟 <http://localhost:8787/>
+
+帳號密碼如下
+
+- username: rstudio
+- password: rstudio
+
+
 ## 使用雲端學習平台
 
 平台籌備中...
